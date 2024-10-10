@@ -17,6 +17,15 @@ return {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      require("mini.comment").setup({
+        options = {
+          customCommentString =
+          '<cmd>lua require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring<cr>\n',
+        },
+      })
+
+      require("mini.cursorword").setup({})
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin

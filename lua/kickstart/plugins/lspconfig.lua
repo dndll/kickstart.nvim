@@ -6,28 +6,46 @@ return {
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
-      library = {
-        -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      library = { -- Load luvit types when the `vim.uv` word is found
+        {
+          path = 'luvit-meta/library',
+          words = { 'vim%.uv' },
+        },
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true },
+  {
+    'Bilal2453/luvit-meta',
+    lazy = true,
+  },
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
-    dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+    dependencies = { -- Automatically install LSPs and related tools to stdpath for Neovim
+      {
+        'williamboman/mason.nvim',
+        config = true,
+      }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- Useful status updates for LSP.
+      'WhoIsSethDaniel/mason-tool-installer.nvim', -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
-
-      -- Allows extra capabilities provided by nvim-cmp
+      {
+        'j-hui/fidget.nvim',
+        opts = {},
+      }, -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
+      'williamboman/mason.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      'hrsh7th/nvim-cmp',
+      'hrsh7th/cmp-nvim-lsp',
+      {
+        'j-hui/fidget.nvim',
+        opts = {},
+      },
+      'saadparwaiz1/cmp_luasnip',
+      'L3MON4D3/LuaSnip',
+      'onsails/lspkind.nvim',
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -60,7 +78,9 @@ return {
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', {
+          clear = true,
+        }),
         callback = function(event)
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
@@ -69,7 +89,10 @@ return {
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            vim.keymap.set(mode, keys, func, {
+              buffer = event.buf,
+              desc = 'LSP: ' .. desc,
+            })
           end
 
           -- Jump to the definition of the word under your cursor.
@@ -99,11 +122,11 @@ return {
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>lr', vim.lsp.buf.rename, '[L]sp [R]e[n]ame')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+          map('<leader>la', vim.lsp.buf.code_action, '[L]sp [A]ction', { 'n', 'x' })
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -116,7 +139,9 @@ return {
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+            local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', {
+              clear = false,
+            })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -130,10 +155,15 @@ return {
             })
 
             vim.api.nvim_create_autocmd('LspDetach', {
-              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', {
+                clear = true,
+              }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                vim.api.nvim_clear_autocmds {
+                  group = 'kickstart-lsp-highlight',
+                  buffer = event2.buf,
+                }
               end,
             })
           end
@@ -144,7 +174,9 @@ return {
           -- This may be unwanted, since they displace some of your code
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {
+                bufnr = event.buf,
+              })
             end, '[T]oggle Inlay [H]ints')
           end
         end,
@@ -196,6 +228,19 @@ return {
         },
       }
 
+      local lspconfig = require 'lspconfig'
+      local configs = require 'lspconfig.configs'
+
+      configs.solidity = {
+        default_config = {
+          cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
+          filetypes = { 'solidity' },
+          root_dir = lspconfig.util.find_git_ancestor,
+          single_file_support = true,
+        },
+      }
+
+      lspconfig.solidity.setup {}
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -208,9 +253,15 @@ return {
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        -- 'stylua', -- Used to format Lua code
+        -- 'pyright', -- Used to format Python code
+        -- 'lua_ls',
+        -- 'eslint',
+        -- 'clangd',
       })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('mason-tool-installer').setup {
+        ensure_installed = ensure_installed,
+      }
 
       require('mason-lspconfig').setup {
         handlers = {
@@ -228,3 +279,88 @@ return {
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
+
+-- -- LSP {{{
+--   do
+--     local __lspServers = {
+--       { name = "ruff_lsp" },
+--       { name = "pyright" },
+--       { name = "nil_ls" },
+--       {
+--         extraOptions = {
+--           settings = {
+--             Lua = {
+--               completion = { callSnippet = "Replace" },
+--               hint = { enable = true },
+--               telemetry = { enabled = false },
+--             },
+--           },
+--         },
+--         name = "lua_ls",
+--       },
+--       {
+--         extraOptions = {
+--           cmd = {
+--             "/nix/store/93pafhh6yahyb6i4kcrpdh1qpr0iqnz8-vscode-langservers-extracted-4.10.0/bin/vscode-eslint-language-server",
+--             "--stdio",
+--           },
+--         },
+--         name = "eslint",
+--       },
+--       { name = "clangd" },
+--     }
+--     -- Adding lspOnAttach function to nixvim module lua table so other plugins can hook into it.
+--     _M.lspOnAttach = function(client, bufnr) end
+--     local __lspCapabilities = function()
+--       capabilities = vim.lsp.protocol.make_client_capabilities()
+
+--       offsetEncoding = "utf-16"
+
+--       return capabilities
+--     end
+
+--     local __setup = {
+--       on_attach = _M.lspOnAttach,
+--       capabilities = __lspCapabilities(),
+--     }
+
+--     for i, server in ipairs(__lspServers) do
+--       if type(server) == "string" then
+--         require("lspconfig")[server].setup(__setup)
+--       else
+--         local options = server.extraOptions
+
+--         if options == nil then
+--           options = __setup
+--         else
+--           options = vim.tbl_extend("keep", options, __setup)
+--         end
+
+--         require("lspconfig")[server.name].setup(options)
+--       end
+--     end
+
+--     require("typescript-tools").setup({
+--       on_attach = function(client, bufnr)
+--         client.server_capabilities.documentFormattingProvider = false
+--         client.server_capabilities.documentRangeFormattingProvider = false
+
+--         if vim.lsp.inlay_hint then
+--           vim.lsp.inlay_hint(bufnr, true)
+--         end
+--       end,
+--       settings = {
+--         tsserver_file_preferences = {
+--           includeInlayEnumMemberValueHints = true,
+--           includeInlayFunctionLikeReturnTypeHints = true,
+--           includeInlayFunctionParameterTypeHints = true,
+--           includeInlayParameterNameHints = "all",
+--           includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+--           includeInlayPropertyDeclarationTypeHints = true,
+--           includeInlayVariableTypeHints = true,
+--           includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+--         },
+--       },
+--     })
+--   end
+--   -- }}}

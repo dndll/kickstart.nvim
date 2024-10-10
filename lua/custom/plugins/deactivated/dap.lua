@@ -1,0 +1,57 @@
+-- {
+  --   "mfussenegger/nvim-dap",
+  --   config = function()
+  --     local dap = require("dap")
+  --     dap.configurations.java = {
+  --       {
+  --         type = "java",
+  --         request = "launch",
+  --         name = "Debug (Attach) - Remote",
+  --         hostName = "127.0.0.1",
+  --         port = 5005,
+  --       },
+  --     }
+
+  --     -- Define DAP signs
+  --     local dap_signs = {
+  --       DapBreakpoint = { text = "●", texthl = "DapBreakpoint" },
+  --       DapBreakpointCondition = { text = "●", texthl = "DapBreakpointCondition" },
+  --       DapLogPoint = { text = "◆", texthl = "DapLogPoint" },
+  --     }
+  --     for name, sign in pairs(dap_signs) do
+  --       vim.fn.sign_define(name, sign)
+  --     end
+  --   end,
+  --   dependencies = {
+  --     "theHamsta/nvim-dap-virtual-text",
+  --     "rcarriga/nvim-dap-ui",
+  --     "mfussenegger/nvim-dap-python",
+  --   },
+  --   event = "BufRead",
+  -- },
+  -- {
+  --   "rcarriga/nvim-dap-ui",
+  --   config = function()
+  --     require("dapui").setup({
+  --       floating = { mappings = { close = { "<ESC>", "q" } } },
+  --     })
+  --   end,
+  --   dependencies = { "mfussenegger/nvim-dap" },
+  --   event = "VeryLazy",
+  -- },
+  -- {
+  --   "theHamsta/nvim-dap-virtual-text",
+  --   config = function()
+  --     require("nvim-dap-virtual-text").setup({})
+  --   end,
+  --   dependencies = { "mfussenegger/nvim-dap" },
+  --   event = "VeryLazy",
+  -- },
+  -- {
+  --   "mfussenegger/nvim-dap-python",
+  --   config = function()
+  --     require("dap-python").setup("/nix/store/g10slrx4c91lzip4hyii5r570nllcn67-python3-3.12.5-env/bin/python3", {})
+  --   end,
+  --   dependencies = { "mfussenegger/nvim-dap" },
+  --   event = "BufRead",
+  -- },

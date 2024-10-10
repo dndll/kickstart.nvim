@@ -28,6 +28,8 @@ return {
         },
       },
       'saadparwaiz1/cmp_luasnip',
+      "onsails/lspkind.nvim",
+      "jcdickinson/codeium.nvim", -- Assuming you want to manage codeium via lazy
 
       -- Adds other completion capabilities.
       --  nvim-cmp does not ship with all sources by default. They are split
@@ -47,6 +49,8 @@ return {
             luasnip.lsp_expand(args.body)
           end,
         },
+        experimental = { ghost_text = true },
+
         completion = { completeopt = 'menu,menuone,noinsert' },
 
         -- For an understanding of why these mappings were
@@ -54,6 +58,15 @@ return {
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
+          ["<C-j>"] = cmp.mapping.select_next_item(),
+          ["<C-k>"] = cmp.mapping.select_prev_item(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+          ["<S-CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+
           -- Select the [n]ext item
           ['<C-n>'] = cmp.mapping.select_next_item(),
           -- Select the [p]revious item
@@ -107,11 +120,66 @@ return {
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
-          { name = 'nvim_lsp' },
+          { name = "codeium" },
           { name = 'luasnip' },
+          { name = 'nvim_lsp' },
           { name = 'path' },
+          { name = "cmdline" },
+        },
+        formatting = {
+          fields = { "kind", "abbr", "menu" },
+          format = require("lspkind").cmp_format({
+            ellipsis_char = "...",
+            maxwidth = 50,
+            symbol_map = { Copilot = "" },
+          }),
+        },
+        window = {
+          completion = {
+            border = "rounded",
+            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+          },
+          documentation = { border = "rounded" },
         },
       }
+      cmp.setup.cmdline({ "/", "?" }, {
+        sources = {
+          { name = "buffer" },
+        },
+      })
+      
+      -- Set configuration for specific filetype.
+      cmp.setup.filetype("gitcommit", {
+        sources = cmp.config.sources({
+          { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
+        }, {
+          { name = "buffer" },
+        }),
+      })
+      
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(":", {
+        sources = cmp.config.sources({
+          { name = "path" },
+        }, {
+          { name = "cmdline" },
+        }),
+      })
+      -- Setup codeium
+      require("codeium").setup({
+        api = { host = "server.codeium.com", port = "443" },
+        bin_path = vim.fn.stdpath("cache") .. "/codeium/bin",
+        config_path = vim.fn.stdpath("cache") .. "/codeium/config.json",
+        enable_chat = true,
+        enable_index_service = true,
+        enable_local_search = true,
+        tools = {
+          curl = "/nix/store/6r0bn0dkvlvhicyvair205s07m92dpaz-curl-8.9.1-bin/bin/curl",
+          gzip = "/nix/store/164s7a7yscnicprzrr78bvk45d77a3yg-gzip-1.13/bin/gzip",
+          uname = "/nix/store/0kg70swgpg45ipcz3pr2siidq9fn6d77-coreutils-9.5/bin/uname",
+          uuidgen = "/nix/store/f3mrhapkqr1lds8x58fh6rwm1lwh8y8c-util-linux-2.39.4-bin/bin/uuidgen",
+        },
+      })
     end,
   },
 }
