@@ -6,7 +6,7 @@ return {
         background_colour = "#000000",
         fps = 60,
         render = "default",
-        timeout = 50000,
+        timeout = 3000,
         top_down = true,
       })
     end,
