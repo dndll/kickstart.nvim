@@ -11,30 +11,31 @@ return {
       },
       vendors = {
         deepseek = {
-          endpoint = "https://api.deepseek.com/chat/completions",
-          model = "deepseek-chat",
+          __inherited_from = "openai",
+          endpoint = "https://api.deepseek.com/v1",
+          model = "deepseek-reasoner",
           api_key_name = "DEEPSEEK_API_KEY",
-          max_tokens = 16384,
-          parse_curl_args = function(opts, code_opts)
-            return {
-              url = opts.endpoint,
-              headers = {
-                ["Accept"] = "application/json",
-                ["Content-Type"] = "application/json",
-                ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
-              },
-              body = {
-                model = opts.model,
-                messages = require("avante.providers").copilot.parse_message(code_opts),
-                temperature = 0,
-                max_tokens = 16384,
-                stream = true,
-              },
-            }
-          end,
-          parse_response_data = function(data_stream, event_state, opts)
-            require("avante.providers").copilot.parse_response(data_stream, event_state, opts)
-          end,
+          -- max_tokens = 16384,
+          -- parse_curl_args = function(opts, code_opts)
+          --   return {
+          --     url = opts.endpoint,
+          --     headers = {
+          --       ["Accept"] = "application/json",
+          --       ["Content-Type"] = "application/json",
+          --       ["Authorization"] = "Bearer " .. os.getenv(opts.api_key_name),
+          --     },
+          --     body = {
+          --       model = opts.model,
+          --       messages = require("avante.providers").copilot.parse_message(code_opts),
+          --       temperature = 0,
+          --       max_tokens = 16384,
+          --       stream = true,
+          --     },
+          --   }
+          -- end,
+          -- parse_response_data = function(data_stream, event_state, opts)
+          --   require("avante.providers").copilot.parse_response(data_stream, event_state, opts)
+          -- end,
         },
       },
       behaviour = {
@@ -46,11 +47,11 @@ return {
       },
       mappings = {
         diff = {
-          ours = "qo",
-          theirs = "qt",
-          all_theirs = "qa",
-          both = "qb",
-          cursor = "qc",
+          ours = "co",
+          theirs = "ct",
+          all_theirs = "ca",
+          both = "cb",
+          cursor = "cc",
           next = "]x",
           prev = "[x",
         },
@@ -96,10 +97,9 @@ return {
       end,
     })
   end,
-  dependencies = { "nvim-lua/plenary.nvim" },
   event = "VeryLazy",
   lazy = false,
-  version = "*", -- set this if you want to always pull the latest change
+  version = false, -- set this if you want to always pull the latest change
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   build = "make",
   dependencies = {
@@ -234,4 +234,3 @@ return {
 --     list_opener = "copen",
 --   },
 -- })
-
