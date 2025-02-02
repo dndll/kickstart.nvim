@@ -8,13 +8,19 @@ return {
     -- make sure to set opts so that lazy.nvim calls blink.compat's setup
     opts = {},
   },
+  -- { import = "lazyvim.plugins.extras.ai.copilot" },
+  {
+    "giuxtaposition/blink-cmp-copilot",
+    enabled = false,
+  },
   {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
     dependencies = {
       'rafamadriz/friendly-snippets', 
       "mikavilpas/blink-ripgrep.nvim",
-      "jcdickinson/codeium.nvim"
+      "jcdickinson/codeium.nvim",
+      "fang2hou/blink-copilot"
     },
 
     -- use a release tag to download pre-built binaries
@@ -77,6 +83,7 @@ return {
       sources = {
         default = {
           'codeium',
+          'copilot',
           'lsp',
           'path',
           'snippets',
@@ -188,6 +195,14 @@ return {
               -- this is an option from cmp-digraphs
               -- cache_digraphs_on_start = true,
             },
+          },
+          copilot = {
+            name = 'copilot',
+            module = "blink-copilot",
+            opts = {
+              max_completions = 3,
+              max_attempts = 4,
+            }
           },
         },
       },
