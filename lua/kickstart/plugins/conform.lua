@@ -1,7 +1,7 @@
 return {
   { -- Autoformat
     'stevearc/conform.nvim',
-    event = { 'BufWritePost' },
+    event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
       {
@@ -42,12 +42,9 @@ return {
         css = { { "prettierd", "prettier" } },
         html = { { "prettierd", "prettier" } },
         java = { "google-java-format" },
-        javascript = { { "prettierd", "prettier" } },
         javascriptreact = { { "prettierd", "prettier" } },
-        lua = { "stylua" },
         markdown = { { "prettierd", "prettier" } },
         nix = { "alejandra" },
-        python = { "black" },
         rust = { "rustfmt" },
         typescript = { { "prettierd", "prettier" } },
         typescriptreact = { { "prettierd", "prettier" } },
