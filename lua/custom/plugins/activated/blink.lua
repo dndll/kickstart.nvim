@@ -74,8 +74,18 @@ return {
       completion = {
         -- Show documentation when selecting a completion item
         documentation = { auto_show = true, auto_show_delay_ms = 250 },
-        ghost_text= {  enabled = true }
+        ghost_text = {  enabled = true },
+        menu = {
+          draw = {
+            columns = {
+              { 'kind_icon' },
+              { 'label', 'label_description', gap = 1 },
+              { 'source_name' }
+            }
+          }
+        }
       },
+        
       signature = { enabled = true },
 
       -- Default list of enabled providers defined so that you can extend it
