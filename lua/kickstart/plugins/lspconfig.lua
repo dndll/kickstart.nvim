@@ -11,7 +11,7 @@ return {
           path = 'luvit-meta/library',
           words = { 'vim%.uv' },
         },
-      },
+      }
     },
   },
   {
@@ -25,7 +25,7 @@ return {
       {
         'williamboman/mason.nvim',
         config = true,
-      }, -- NOTE: Must be loaded before dependants
+      },                                           -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim', -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -33,17 +33,17 @@ return {
         'j-hui/fidget.nvim',
         opts = {},
       }, -- Allows extra capabilities provided by nvim-cmp
-      'hrsh7th/cmp-nvim-lsp',
       'williamboman/mason.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'williamboman/mason-lspconfig.nvim',
-      'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/nvim-cmp',
+      -- 'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp',
+      -- 'saadparwaiz1/cmp_luasnip',
       {
         'j-hui/fidget.nvim',
         opts = {},
       },
-      'saadparwaiz1/cmp_luasnip',
       'L3MON4D3/LuaSnip',
       'onsails/lspkind.nvim',
     },
@@ -182,13 +182,6 @@ return {
         end,
       })
 
-      -- LSP servers and clients are able to communicate to each other what features they support.
-      --  By default, Neovim doesn't support everything that is in the LSP specification.
-      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -227,7 +220,6 @@ return {
           },
         },
       }
-
       local lspconfig = require 'lspconfig'
       local configs = require 'lspconfig.configs'
 
@@ -240,7 +232,15 @@ return {
         },
       }
 
-      lspconfig.solidity.setup {}
+
+      for server, config in pairs(servers) do
+        -- passing config.capabilities to blink.cmp merges with the capabilities in your
+        -- `opts[server].capabilities, if you've defined it
+        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        -- lspconfig[server].setup(config)
+      end
+
+
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -249,16 +249,7 @@ return {
       --  You can press `g?` for help in this menu.
       require('mason').setup()
 
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        -- 'stylua', -- Used to format Lua code
-        -- 'pyright', -- Used to format Python code
-        -- 'lua_ls',
-        -- 'eslint',
-        -- 'clangd',
-      })
       require('mason-tool-installer').setup {
         ensure_installed = ensure_installed,
       }
@@ -267,6 +258,7 @@ return {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+            local capabilities
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
@@ -278,89 +270,3 @@ return {
     end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et
-
--- -- LSP {{{
---   do
---     local __lspServers = {
---       { name = "ruff_lsp" },
---       { name = "pyright" },
---       { name = "nil_ls" },
---       {
---         extraOptions = {
---           settings = {
---             Lua = {
---               completion = { callSnippet = "Replace" },
---               hint = { enable = true },
---               telemetry = { enabled = false },
---             },
---           },
---         },
---         name = "lua_ls",
---       },
---       {
---         extraOptions = {
---           cmd = {
---             "/nix/store/93pafhh6yahyb6i4kcrpdh1qpr0iqnz8-vscode-langservers-extracted-4.10.0/bin/vscode-eslint-language-server",
---             "--stdio",
---           },
---         },
---         name = "eslint",
---       },
---       { name = "clangd" },
---     }
---     -- Adding lspOnAttach function to nixvim module lua table so other plugins can hook into it.
---     _M.lspOnAttach = function(client, bufnr) end
---     local __lspCapabilities = function()
---       capabilities = vim.lsp.protocol.make_client_capabilities()
-
---       offsetEncoding = "utf-16"
-
---       return capabilities
---     end
-
---     local __setup = {
---       on_attach = _M.lspOnAttach,
---       capabilities = __lspCapabilities(),
---     }
-
---     for i, server in ipairs(__lspServers) do
---       if type(server) == "string" then
---         require("lspconfig")[server].setup(__setup)
---       else
---         local options = server.extraOptions
-
---         if options == nil then
---           options = __setup
---         else
---           options = vim.tbl_extend("keep", options, __setup)
---         end
-
---         require("lspconfig")[server.name].setup(options)
---       end
---     end
-
---     require("typescript-tools").setup({
---       on_attach = function(client, bufnr)
---         client.server_capabilities.documentFormattingProvider = false
---         client.server_capabilities.documentRangeFormattingProvider = false
-
---         if vim.lsp.inlay_hint then
---           vim.lsp.inlay_hint(bufnr, true)
---         end
---       end,
---       settings = {
---         tsserver_file_preferences = {
---           includeInlayEnumMemberValueHints = true,
---           includeInlayFunctionLikeReturnTypeHints = true,
---           includeInlayFunctionParameterTypeHints = true,
---           includeInlayParameterNameHints = "all",
---           includeInlayParameterNameHintsWhenArgumentMatchesName = true,
---           includeInlayPropertyDeclarationTypeHints = true,
---           includeInlayVariableTypeHints = true,
---           includeInlayVariableTypeHintsWhenTypeMatchesName = true,
---         },
---       },
---     })
---   end
---   -- }}}

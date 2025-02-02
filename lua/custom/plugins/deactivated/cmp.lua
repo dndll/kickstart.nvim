@@ -27,17 +27,18 @@ return {
           -- },
         },
       },
-      'saadparwaiz1/cmp_luasnip',
-      "onsails/lspkind.nvim",
+     "onsails/lspkind.nvim",
       "jcdickinson/codeium.nvim", -- Assuming you want to manage codeium via lazy
+      'saghen/blink.cmp',
 
-      -- Adds other completion capabilities.
-      --  nvim-cmp does not ship with all sources by default. They are split
-      --  into multiple repos for maintenance purposes.
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      "hrsh7th/cmp-cmdline", -- for { name = "cmdline" }
-      "hrsh7th/cmp-git",     -- for { name = "cmp_git" }
+      -- -- Adds other completion capabilities.
+      -- --  nvim-cmp does not ship with all sources by default. They are split
+      -- --  into multiple repos for maintenance purposes.
+      -- 'saadparwaiz1/cmp_luasnip',
+      --  'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-path',
+      -- "hrsh7th/cmp-cmdline", -- for { name = "cmdline" }
+      -- "hrsh7th/cmp-git",     -- for { name = "cmp_git" }
     },
     config = function()
       -- See `:help cmp`
@@ -185,4 +186,4 @@ return {
     end,
   },
 }
--- vim: ts=2 sts=2 sw=2 et
+-
