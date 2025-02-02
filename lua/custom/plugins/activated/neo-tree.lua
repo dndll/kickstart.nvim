@@ -26,7 +26,6 @@ return {
 }
 
 
-
 -- require("neo-tree").setup({
 --   buffers = { bind_to_cwd = false, follow_current_file = { enabled = true } },
 --   close_if_last_window = true,
