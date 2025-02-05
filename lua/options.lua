@@ -16,7 +16,6 @@ end)
 do
   local nixvim_globals = {
     loaded_ts_context_commentstring = false,
-    mapleader = " ",
     mkdp_browser = "floorp",
     mkdp_theme = "dark",
     rustaceanvim = {
@@ -28,7 +27,19 @@ do
               extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
             },
             ["rust-analyzer"] = {
-              check = { command = "clippy" },
+              check = {
+                command = "check",
+                extraArgs = {
+                  "--no-deps",
+                },
+              },
+              files = {
+                excludeDirs = {
+                  ".direnv",
+                  ".git",
+                  "target",
+                },
+              },
               checkOnSave = true,
               inlayHints = {
                 enable = true,
@@ -40,9 +51,9 @@ do
             },
           },
         },
-        -- on_attach = function(client, bufnr)
-        --   return _M.lspOnAttach(client, bufnr)
-        -- end,
+        on_attach = function(client, bufnr)
+          -- you can also put keymaps in here
+        end,
       },
       tools = { float_win_config = { auto_focus = true, open_split = "vertical" } },
     },
@@ -109,7 +120,7 @@ do
     swapfile = false,
     tabstop = 2,
     termguicolors = true,
-    timeoutlen = 50,
+    timeoutlen = 150,
     undofile = true,
     updatetime = 50,
     wrap = false,
@@ -159,9 +170,12 @@ function ToggleWrap()
 end
 
 -- Keymaps for Toggle Functions
-vim.api.nvim_set_keymap('n', '<leader>tn', '<cmd>lua ToggleLineNumber()<CR>', { noremap = true, silent = true, desc = "Toggle Line Numbers" })
-vim.api.nvim_set_keymap('n', '<leader>tr', '<cmd>lua ToggleRelativeLineNumber()<CR>', { noremap = true, silent = true, desc = "Toggle Relative Line Numbers" })
-vim.api.nvim_set_keymap('n', '<leader>tw', '<cmd>lua ToggleWrap()<CR>', { noremap = true, silent = true, desc = "Toggle Wrap" })
+vim.api.nvim_set_keymap('n', '<leader>tn', '<cmd>lua ToggleLineNumber()<CR>',
+  { noremap = true, silent = true, desc = "Toggle Line Numbers" })
+vim.api.nvim_set_keymap('n', '<leader>tr', '<cmd>lua ToggleRelativeLineNumber()<CR>',
+  { noremap = true, silent = true, desc = "Toggle Relative Line Numbers" })
+vim.api.nvim_set_keymap('n', '<leader>tw', '<cmd>lua ToggleWrap()<CR>',
+  { noremap = true, silent = true, desc = "Toggle Wrap" })
 
 if vim.lsp.inlay_hint then
   vim.keymap.set("n", "<leader>uh", function()

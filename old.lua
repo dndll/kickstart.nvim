@@ -44,23 +44,19 @@ require("ibl").setup({
   scope = { enabled = true, show_start = true },
 })
 
-require("hop").setup({ keys = "fjdkslaghqwerioputy" })
+require("hop").setup({ keys = "jklhasdfqwpoiuer" })
 require("dressing").setup({})
 require("better_escape").setup({ timeout = 200 })
 require("auto-save").setup({})
 require("persistence").setup({})
-require("colorizer").setup({
-  filetypes = nil,
-  user_default_options = nil,
-  buftypes = nil,
-})
+-- require("colorizer").setup({
+--   filetypes = nil,
+--   user_default_options = nil,
+--   buftypes = nil,
+-- })
 vim.notify = require("notify")
 require("notify").setup({ background_colour = "#000000", fps = 60, render = "default", timeout = 500, top_down = true })
-
-
-require("conform").setup({
-  
-})
+require("conform").setup({})
 
 
 wilder = require("wilder")

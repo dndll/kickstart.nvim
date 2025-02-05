@@ -162,7 +162,8 @@ return {
               ignore_paths = {
                 ".devenv",
                 ".direnv",
-                ".git"
+                ".git",
+                "target"
               },
 
               -- Any additional paths to search in, in addition to the project

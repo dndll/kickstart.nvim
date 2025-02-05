@@ -1,11 +1,12 @@
 return {
-    "ThePrimeagen/harpoon",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("harpoon").setup()
-    end,
-    cmd = { "HarpoonToggle", "HarpoonGoto" },
-  }
+  "ThePrimeagen/harpoon",
+  branch = "harpoon2",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  config = function()
+    require("harpoon").setup()
+  end,
+  cmd = { "HarpoonToggle", "HarpoonGoto" },
+}
 
 --   { action = require("harpoon.mark").add_file,        key = "<leader>ha", mode = "n", options = { silent = true } },
 --   { action = require("harpoon.ui").toggle_quick_menu, key = "<C-e>",      mode = "n", options = { silent = true } },
@@ -41,3 +42,4 @@ return {
 --     mode = "n",
 --     options = { silent = true },
 --   },
+

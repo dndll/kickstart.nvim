@@ -28,7 +28,7 @@ return {
         },
       },
      "onsails/lspkind.nvim",
-      "jcdickinson/codeium.nvim", -- Assuming you want to manage codeium via lazy
+      "Exafunction/codeium.nvim", -- Assuming you want to manage codeium via lazy
       'saghen/blink.cmp',
 
       -- -- Adds other completion capabilities.
