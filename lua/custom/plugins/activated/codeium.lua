@@ -12,6 +12,12 @@ return {
       -- enable_index_service = true,
       -- enable_local_search = true,
       -- workspace_root = 'use_lsp',
+      virtual_text = {
+        enabled = true,
+        key_bindings = {
+          accept = "<C-g>",
+        },
+      },
       idle_delay = 100,
       --     tools = {
       --       curl = "/nix/store/6r0bn0dkvlvhicyvair205s07m92dpaz-curl-8.9.1-bin/bin/curl",

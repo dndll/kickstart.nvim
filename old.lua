@@ -44,8 +44,6 @@ require("ibl").setup({
   scope = { enabled = true, show_start = true },
 })
 
-require("hop").setup({ keys = "jklhasdfqwpoiuer" })
-require("dressing").setup({})
 require("better_escape").setup({ timeout = 200 })
 require("auto-save").setup({})
 require("persistence").setup({})

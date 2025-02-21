@@ -17,7 +17,7 @@ return {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
     dependencies = {
-      'rafamadriz/friendly-snippets', 
+      'rafamadriz/friendly-snippets',
       "mikavilpas/blink-ripgrep.nvim",
       "jcdickinson/codeium.nvim",
       "fang2hou/blink-copilot"
@@ -33,7 +33,7 @@ return {
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
-          -- 'default' for mappings similar to built-in completion
+      -- 'default' for mappings similar to built-in completion
       -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
       -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
       -- See the full "keymap" documentation for information on defining your own keymap.
@@ -55,12 +55,23 @@ return {
           'fallback'
         },
 
-        ["<C-l>"] = {
-            function()
-              -- invoke manually, requires blink >v0.8.0
-              require("blink-cmp").show({ providers = { "ripgrep" } })
-            end,
-          },
+        ['<C-l>'] = {
+          function(cmp)
+            if cmp.snippet_active() then
+              return cmp.accept()
+            else
+              return cmp.select_and_accept()
+            end
+          end,
+          'snippet_forward',
+          'fallback'
+        },
+        -- ["<C-l>"] = {
+        --   function()
+        --     -- invoke manually, requires blink >v0.8.0
+        --     require("blink-cmp").show({ providers = { "ripgrep" } })
+        --   end,
+        -- },
       },
 
       appearance = {
@@ -73,27 +84,27 @@ return {
 
       completion = {
         -- Show documentation when selecting a completion item
-        documentation = { auto_show = true, auto_show_delay_ms = 250 },
-        ghost_text = {  enabled = true },
+        documentation = { auto_show = true, auto_show_delay_ms = 150 },
+        ghost_text = { enabled = true },
         menu = {
           draw = {
             columns = {
               { 'kind_icon' },
-              { 'label', 'label_description', gap = 1 },
+              { 'label',      'label_description', gap = 1 },
               { 'source_name' }
             }
           }
         }
       },
-        
+
       signature = { enabled = true },
 
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         default = {
-          'codeium',
-          'copilot',
+          -- 'codeium',
+          -- 'copilot',
           'lsp',
           'path',
           'snippets',
@@ -113,12 +124,12 @@ return {
 
               -- the minimum length of the current word to start searching
               -- (if the word is shorter than this, the search will not start)
-              prefix_min_len = 3,
+              prefix_min_len = 2,
 
               -- The number of lines to show around each match in the preview
               -- (documentation) window. For example, 5 means to show 5 lines
               -- before, then the match, and another 5 lines after the match.
-              context_size = 5,
+              context_size = 6,
 
               -- The maximum file size of a file that ripgrep should include in
               -- its search. Useful when your project contains large files that
@@ -126,7 +137,7 @@ return {
               -- Examples:
               -- "1024" (bytes by default), "200K", "1M", "1G", which will
               -- exclude files larger than that size.
-              max_filesize = "1M",
+              max_filesize = "256K",
 
               -- Specifies how to find the root of the project where the ripgrep
               -- search will start from. Accepts the same options as the marker
@@ -190,31 +201,31 @@ return {
               return items
             end,
           },
-            -- create provider
-          codeium = {
-            name = 'codeium', -- IMPORTANT: use the same name as you would for nvim-cmp
-            module = 'blink.compat.source',
-
-            -- all blink.cmp source config options work as normal:
-            score_offset = -3,
-
-            -- this table is passed directly to the proxied completion source
-            -- as the `option` field in nvim-cmp's source config
-            --
-            -- this is NOT the same as the opts in a plugin's lazy.nvim spec
-            opts = {
-              -- this is an option from cmp-digraphs
-              -- cache_digraphs_on_start = true,
-            },
-          },
-          copilot = {
-            name = 'copilot',
-            module = "blink-copilot",
-            opts = {
-              max_completions = 3,
-              max_attempts = 4,
-            }
-          },
+          -- create provider
+          -- codeium = {
+          --   name = 'codeium', -- IMPORTANT: use the same name as you would for nvim-cmp
+          --   module = 'blink.compat.source',
+          --
+          --   -- all blink.cmp source config options work as normal:
+          --   score_offset = -3,
+          --
+          --   -- this table is passed directly to the proxied completion source
+          --   -- as the `option` field in nvim-cmp's source config
+          --   --
+          --   -- this is NOT the same as the opts in a plugin's lazy.nvim spec
+          --   opts = {
+          --     -- this is an option from cmp-digraphs
+          --     -- cache_digraphs_on_start = true,
+          --   },
+          -- },
+          -- copilot = {
+          --   name = 'copilot',
+          --   module = "blink-copilot",
+          --   opts = {
+          --     max_completions = 3,
+          --     max_attempts = 4,
+          --   }
+          -- },
         },
       },
       snippets = { preset = 'luasnip' },
