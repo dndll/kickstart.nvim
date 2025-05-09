@@ -13,5 +13,6 @@ return {
     { "s", function() require("flash").jump() end,       mode = { "n", "x", "o" } },
     { "S", function() require("flash").treesitter() end, mode = { "n", "x", "o" } },
     { "r", function() require("flash").remote() end,     mode = "o" },
+    { "R", mode = "n",                                   function() require("flash").remote({ restore = true }) end }
   },
 }

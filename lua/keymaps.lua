@@ -530,46 +530,46 @@ do
       mode = { "n" },
       options = { desc = "FlyCheck", silent = true },
     },
-    {
-      action = function()
-        require("hop").hint_words()
-      end,
-      key = "s",
-      mode = "",
-      options = { remap = true },
-    },
-    {
-      action = function()
-        require("hop").hint_lines()
-      end,
-      key = "<S-s>",
-      mode = "",
-      options = { remap = true },
-    },
-    {
-      action = function()
-        require("hop").hint_char1({
-          direction = require("hop.hint").HintDirection.AFTER_CURSOR,
-          current_line_only = true,
-          hint_offset = -1,
-        })
-      end,
-      key = "t",
-      mode = "",
-      options = { remap = true },
-    },
-    {
-      action = function()
-        require("hop").hint_char1({
-          direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
-          current_line_only = true,
-          hint_offset = 1,
-        })
-      end,
-      key = "T",
-      mode = "",
-      options = { remap = true },
-    },
+    -- {
+    --   action = function()
+    --     require("hop").hint_words()
+    --   end,
+    --   key = "s",
+    --   mode = "",
+    --   options = { remap = true },
+    -- },
+    -- {
+    --   action = function()
+    --     require("hop").hint_lines()
+    --   end,
+    --   key = "<S-s>",
+    --   mode = "",
+    --   options = { remap = true },
+    -- },
+    -- {
+    --   action = function()
+    --     require("hop").hint_char1({
+    --       direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+    --       current_line_only = true,
+    --       hint_offset = -1,
+    --     })
+    --   end,
+    --   key = "t",
+    --   mode = "",
+    --   options = { remap = true },
+    -- },
+    -- {
+    --   action = function()
+    --     require("hop").hint_char1({
+    --       direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
+    --       current_line_only = true,
+    --       hint_offset = 1,
+    --     })
+    --   end,
+    --   key = "T",
+    --   mode = "",
+    --   options = { remap = true },
+    -- },
     { action = "<cmd>LazyGit<CR>", key = "<leader>gg", mode = "n",          options = { desc = "LazyGit (root dir)" } },
     { action = "gitsigns",         key = "<leader>gh", mode = { "n", "v" }, options = { desc = "+hunks", silent = true } },
     {
