@@ -1,7 +1,9 @@
+-- swap staline → lualine
 return {
-  "nvim-lualine/lualine.nvim",
+  'nvim-lualine/lualine.nvim',
+  dependencies = { 'nvim-tree/nvim-web-devicons' },
   config = function()
-    require("lualine").setup({
+    require('lualine').setup({
       options = {
         theme = "ayu_dark", -- Adjust theme as needed
         section_separators = "",
@@ -14,8 +16,8 @@ return {
         lualine_x = { "lsp_name" },
         lualine_y = { "filetype" },
         lualine_z = { "progress" },
-      },
+      }
     })
   end,
+  event = 'VeryLazy',
 }
-

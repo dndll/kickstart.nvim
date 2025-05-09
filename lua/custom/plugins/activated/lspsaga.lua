@@ -28,17 +28,24 @@ return {
       ui = { border = "rounded", code_action = "💡" },
     })
 
-    __lint = require("lint")
-    __lint.linters_by_ft = {
-      -- javascript = { "eslint_d" },
-      -- javascriptreact = { "eslint_d" },
-      -- json = { "jsonlint" },
-      lua = { "selene" },
-      nix = { "statix" },
-      python = { "flake8" },
-      typescript = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
+    local lint = require('lint')
+
+    lint.linters_by_ft = {
+      lua             = { 'selene' },
+      nix             = { 'statix' },
+      solidity        = { 'solhint' },
+      python          = { 'flake8' },
+      rust            = { 'clippy' },
+      typescript      = { 'eslint_d' },
+      typescriptreact = { 'eslint_d' },
+      javascript      = { 'eslint_d' },
+      json            = { 'jsonlint' },
     }
+    local lint_au = vim.api.nvim_create_augroup('lint', { clear = true })
+    vim.api.nvim_create_autocmd(
+      { 'BufEnter', 'BufWritePost', 'InsertLeave' },
+      { group = lint_au, callback = function() lint.try_lint() end }
+    )
   end,
   dependencies = {
     'mfussenegger/nvim-lint',
@@ -46,4 +53,3 @@ return {
     'nvim-tree/nvim-web-devicons',
   }
 }
-

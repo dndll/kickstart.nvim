@@ -6,4 +6,3 @@ return {
   end,
   cmd = { "HopWord", "HopPattern", "HopLine", "HopChar2" },
 }
-

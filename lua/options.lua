@@ -26,29 +26,27 @@ do
               extraArgs = { "--profile", "rust-analyzer" },
               extraEnv = { CARGO_PROFILE_RUST_ANALYZER_INHERITS = "dev" },
             },
-            ["rust-analyzer"] = {
-              check = {
-                command = "check",
-                extraArgs = {
-                  "--no-deps",
-                },
+            check = {
+              command = "clippy",
+              extraArgs = {
+                "--no-deps",
               },
-              files = {
-                excludeDirs = {
-                  ".direnv",
-                  ".git",
-                  "target",
-                },
-              },
-              checkOnSave = true,
-              inlayHints = {
-                enable = true,
-                otherHintsPrefix = "=> ",
-                parameterHintsPrefix = "<- ",
-                showParameterNames = true,
-              },
-              procMacro = { enable = true },
             },
+            files = {
+              excludeDirs = {
+                ".direnv",
+                ".git",
+                "target",
+              },
+            },
+            checkOnSave = true,
+            inlayHints = {
+              enable = true,
+              otherHintsPrefix = "=> ",
+              parameterHintsPrefix = "<- ",
+              showParameterNames = true,
+            },
+            procMacro = { enable = true },
           },
         },
         on_attach = function(client, bufnr)

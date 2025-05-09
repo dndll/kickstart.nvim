@@ -12,6 +12,17 @@ return {
       -- enable_index_service = true,
       -- enable_local_search = true,
       -- workspace_root = 'use_lsp',
+      workspace_root = {
+        use_lsp = true,
+        find_root = nil,
+        paths = {
+          ".git",
+          "package.json",
+          "cargo.toml",
+          "foundry.toml",
+        }
+      },
+      enable_cmp_source = false,
       virtual_text = {
         enabled = true,
         key_bindings = {

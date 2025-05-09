@@ -14,16 +14,18 @@
 --  config = function() ... end
 
 return {
-  { -- Useful plugin to show you pending keybinds.
+  {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     opts = {
       ignore_missing = false,
-      win = { border = "none", wo = { winblend = 0 } },
+      win = { border = "none", wo = { winblend = 10 } },
       icons = {
         -- set icon mappings to true if you have a Nerd Font
         mappings = vim.g.have_nerd_font,
-        breadcrumb = "»", group = "+", separator = "",
+        breadcrumb = "»",
+        group = "+",
+        separator = "",
         -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
         -- default whick-key.nvim defined Nerd Font icons, otherwise define a string table
         keys = vim.g.have_nerd_font and {} or {
@@ -60,7 +62,7 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>l', group = '[L]sp', mode = { 'n', 'x' } },
+        { '<leader>l', group = '[L]sp',      mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>f', group = '[F]ind' },

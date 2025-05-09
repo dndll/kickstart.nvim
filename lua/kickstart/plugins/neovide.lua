@@ -1,4 +1,3 @@
-
 local opt = vim.opt
 local g = vim.g
 local o = vim.o
@@ -16,6 +15,7 @@ if g.neovide then
   g.neovide_cursor_vfx_particle_density = 14.0
   g.neovide_cursor_vfx_particle_speed = 12.0
   g.neovide_transparency = 0.8
+  g.neovide_input_macos_alt_is_meta = true
 
   -- Neovide Fonts
   o.guifont = "MonoLisa Trial:Medium:h15"
@@ -26,3 +26,4 @@ if g.neovide then
   -- o.guifont = "BlexMono Nerd Font Mono:h14:Medium:i"
   -- o.guifont = "Liga SFMono Nerd Font:b:h15"
 end
+

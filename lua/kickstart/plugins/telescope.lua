@@ -74,17 +74,10 @@ return {
         },
       }
 
-      local __telescopeExtensions = { "undo", "fzf", "projects", "harpoon", "lazygit" }
-      for i, extension in ipairs(__telescopeExtensions) do
-        pcall(require('telescope').load_extension, extension)
+
+      for _, ext in ipairs { 'undo', 'fzf', 'projects', 'harpoon', 'lazygit' } do
+        pcall(require('telescope').load_extension, ext)
       end
-      -- Enable Telescope extensions if they are installed
-      -- pcall(require('telescope').load_extension, 'fzf')
-      -- pcall(require('telescope').load_extension, 'ui-select')
-      -- pcall(require('telescope').load_extension, 'undo')
-      -- pcall(require('telescope').load_extension, 'projects')
-      -- pcall(require('telescope').load_extension, 'harpoon')
-      -- pcall(require('telescope').load_extension, 'lazygit')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'

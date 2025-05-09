@@ -80,7 +80,7 @@ do
     { action = "<cmd>Telescope oldfiles<cr>",    key = "<leader>fr", mode = "n", options = { desc = "Recent" } },
     { action = "<cmd>Telescope git_commits<cr>", key = "<leader>gc", mode = "n", options = { desc = "Commits" } },
     { action = "<cmd>Telescope git_status<cr>",  key = "<leader>gs", mode = "n", options = { desc = "Status" } },
-    { action = "<cmd>Telescope commands<cr>",    key = "<leader>sC", mode = "n", options = { desc = "Commands" } },
+    { action = "<cmd>Telescope commands<cr>",    key = "<leader>fC", mode = "n", options = { desc = "Commands" } },
     {
       action = "<cmd>Telescope diagnostics<cr>",
       key = "<leader>lD",
@@ -93,8 +93,8 @@ do
       mode = "n",
       options = { desc = "Search Highlight Groups" },
     },
-    { action = "<cmd>Telescope man_pages<cr>", key = "<leader>sM", mode = "n", options = { desc = "Man pages" } },
-    { action = "<cmd>Telescope resume<cr>",    key = "<leader>sR", mode = "n", options = { desc = "Resume" } },
+    { action = "<cmd>Telescope man_pages<cr>",                                                    key = "<leader>sM", mode = "n", options = { desc = "Man pages" } },
+
     {
       action = "<cmd>Telescope autocommands<cr>",
       key = "<leader>sa",

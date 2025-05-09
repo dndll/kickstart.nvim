@@ -33,9 +33,6 @@ return {
         'j-hui/fidget.nvim',
         opts = {},
       }, -- Allows extra capabilities provided by nvim-cmp
-      'williamboman/mason.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-      'williamboman/mason-lspconfig.nvim',
       -- 'hrsh7th/nvim-cmp',
       -- 'hrsh7th/cmp-nvim-lsp',
       -- 'hrsh7th/cmp-nvim-lsp',
@@ -193,8 +190,6 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         taplo = {},
-        -- clangd = {},
-        -- gopls = {},
         -- pyright = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -206,67 +201,40 @@ return {
         --
 
         lua_ls = {
-          -- cmd = {...},
-          -- filetypes = { ...},
-          -- capabilities = {},
           settings = {
             Lua = {
               completion = {
                 callSnippet = 'Replace',
               },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
         },
-
+        solidity_ls_nomicfoundation = {
+          -- cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
+          -- filetypes = { 'solidity' },
+          -- root_dir = require('lspconfig.util').find_git_ancestor,
+          -- single_file_support = true,
+        }
       }
-      local lspconfig = require 'lspconfig'
-      local configs = require 'lspconfig.configs'
+      require("mason").setup()
 
+      local ensure = vim.tbl_keys(servers)
 
+      require("mason-lspconfig").setup {
+        ensure_installed = ensure,
+        -- automatic_enable = {             -- <-- new API		
+        --   exclude = { "rust_analyzer" }, -- kill it dead
+        -- },
+        automatic_enable = false, -- we’ll call lspconfig ourselves
+      }
 
-      for server, config in pairs(servers) do
-        -- passing config.capabilities to blink.cmp merges with the capabilities in your
-        -- `opts[server].capabilities, if you've defined it
-        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-        -- lspconfig[server].setup(config)
+      for name, cfg in pairs(servers) do
+        cfg.capabilities = require("blink.cmp").get_lsp_capabilities(cfg.capabilities)
+        require("lspconfig")[name].setup(cfg)
       end
 
-
-      -- Ensure the servers and tools above are installed
-      --  To check the current status of installed tools and/or manually install
-      --  other tools, you can run
-      --    :Mason
-      --
-      --  You can press `g?` for help in this menu.
-      require('mason').setup()
-
-      local ensure_installed = vim.tbl_keys(servers or {})
       require('mason-tool-installer').setup {
         ensure_installed = ensure_installed,
-      }
-      servers.nomicfoundation_solidity = {
-        cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
-        filetypes = { 'solidity' },
-        root_dir = require('lspconfig.util').find_git_ancestor,
-        single_file_support = true,
-      }
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            local capabilities = {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
-      require('mason-lspconfig').setup_handlers {
-        ['rust_analyzer'] = function() end,
       }
     end,
   },
