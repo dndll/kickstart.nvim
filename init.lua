@@ -13,7 +13,7 @@ require 'keymaps'
 require 'lazy-bootstrap'
 require 'lazy-plugins'
 
-require('avante_lib').load()
+-- require('avante_lib').load()
 
 local rocks_config = {
   rocks_path = vim.env.HOME .. "/.local/share/nvim/rocks",
