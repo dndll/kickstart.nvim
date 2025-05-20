@@ -1,6 +1,6 @@
 local group = vim.api.nvim_create_augroup('SagaHoverDiag', { clear = true })
 
-vim.o.updatetime = 300 -- 0.3 s CursorHold delay – tweak to taste
+vim.o.updatetime = 1000 -- 0.3 s CursorHold delay – tweak to taste
 local function is_float(win)
   return vim.api.nvim_win_get_config(win).relative ~= ''
 end
@@ -102,6 +102,7 @@ return {
   --   end,
   -- }),
 
+  -- FIXME: this should open up on the right, not just in the middle of the page unexitable
   -- open up outline on large files
   vim.api.nvim_create_autocmd("BufReadPost", {
     pattern  = { "*.rs", "*.lua", "*.ts", "*.go" },
