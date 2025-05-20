@@ -19,7 +19,7 @@ return {
         auto_preview = true,
         close_after_jump = true,
         keys = { jump = "e", quit = "q", toggle_or_jump = "o" },
-        layout = "float",
+        layout = "normal",
         win_position = "right",
       },
       rename = { auto_save = false, keys = { exec = "<CR>", quit = { "<C-k>", "<Esc>" }, select = "x" } },
