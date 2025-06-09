@@ -20,7 +20,7 @@ do
         mkdp_theme = "dark",
         rustaceanvim = {
             server = {
-                settings = {
+                default_settings = {
                     ["rust-analyzer"] = {
                         cargo = {
                             -- targetDir = "target/analyzer",
@@ -31,14 +31,14 @@ do
                             },
                         },
                         check = {
-                            command = "clippy",
+                            command = "check",
                             extraArgs = {
-                                "--no-deps",
+                                -- "--no-deps",
                             },
                         },
                         checkOnSave = {
-                            enable = true,      -- run when you hit :w
-                            command = "clippy", -- or "check"
+                            enable = true,     -- run when you hit :w
+                            command = "check", -- or "check"
                             allTargets = false,
                         },
                         files = {
