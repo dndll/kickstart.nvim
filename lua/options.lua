@@ -31,14 +31,14 @@ do
                             },
                         },
                         check = {
-                            command = "check",
+                            command = "clippy",
                             extraArgs = {
                                 -- "--no-deps",
                             },
                         },
                         checkOnSave = {
-                            enable = true,     -- run when you hit :w
-                            command = "check", -- or "check"
+                            enable = true,      -- run when you hit :w
+                            command = "clippy", -- or "check"
                             allTargets = false,
                         },
                         files = {
@@ -125,7 +125,7 @@ do
         splitright = true,
         swapfile = false,
         tabstop = 2,
-        termguicolors = true,
+        -- termguicolors = true,
         timeoutlen = 150,
         undofile = true,
         updatetime = 50,

@@ -31,11 +31,11 @@ return {
         local lint = require('lint')
         local clippy = lint.linters.clippy -- grab default definition
         -- -- 1) pass the flag explicitly …
-        -- clippy.args = vim.list_extend(clippy.args or {}, { '--target-dir', 'target/analyzer' })
-        -- 2) … or force the environment variable (cargo prefers this)
-        clippy.env = vim.tbl_extend('force', clippy.env or {}, {
-            CARGO_TARGET_DIR = 'target/analyzer',
-        })
+        clippy.args = vim.list_extend(clippy.args or {}, { '--target-dir', 'target/analyzer' })
+        -- -- 2) … or force the environment variable (cargo prefers this)
+        -- clippy.env = vim.tbl_extend('force', clippy.env or {}, {
+        --     CARGO_TARGET_DIR = 'target/analyzer',
+        -- })
 
         lint.linters_by_ft = {
             lua             = { 'selene' },
@@ -46,7 +46,7 @@ return {
             typescript      = { 'eslint_d' },
             typescriptreact = { 'eslint_d' },
             javascript      = { 'eslint_d' },
-            json            = { 'jsonlint' },
+            json            = { 'jsonlint' }
         }
         local lint_au = vim.api.nvim_create_augroup('lint', { clear = true })
         vim.api.nvim_create_autocmd(
