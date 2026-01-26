@@ -29,18 +29,7 @@ return {
             'williamboman/mason-lspconfig.nvim',
             'WhoIsSethDaniel/mason-tool-installer.nvim', -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            {
-                'j-hui/fidget.nvim',
-                opts = {},
-            }, -- Allows extra capabilities provided by nvim-cmp
-            -- 'hrsh7th/nvim-cmp',
-            -- 'hrsh7th/cmp-nvim-lsp',
-            -- 'hrsh7th/cmp-nvim-lsp',
-            -- 'saadparwaiz1/cmp_luasnip',
-            {
-                'j-hui/fidget.nvim',
-                opts = {},
-            },
+            { 'j-hui/fidget.nvim', opts = {} },
             'L3MON4D3/LuaSnip',
             'onsails/lspkind.nvim',
         },
@@ -229,13 +218,16 @@ return {
                 automatic_installation = { exclude = { "rust_analyzer" } }, -- <- extra safety
             }
 
+            -- Use Neovim 0.11+ native vim.lsp.config API
+            local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
             for name, cfg in pairs(servers) do
-                cfg.capabilities = require("blink.cmp").get_lsp_capabilities(cfg.capabilities)
-                require("lspconfig")[name].setup(cfg)
+                cfg.capabilities = vim.tbl_deep_extend("force", blink_capabilities, cfg.capabilities or {})
+                vim.lsp.config(name, cfg)
             end
+            vim.lsp.enable(vim.tbl_keys(servers))
 
             require('mason-tool-installer').setup {
-                ensure_installed = ensure_installed,
+                ensure_installed = ensure,
             }
         end,
     },

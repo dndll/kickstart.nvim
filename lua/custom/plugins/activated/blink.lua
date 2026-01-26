@@ -8,19 +8,13 @@ return {
     -- make sure to set opts so that lazy.nvim calls blink.compat's setup
     opts = {},
   },
-  -- { import = "lazyvim.plugins.extras.ai.copilot" },
-  {
-    "giuxtaposition/blink-cmp-copilot",
-    enabled = false,
-  },
   {
     'saghen/blink.cmp',
     -- optional: provides snippets for the snippet source
     dependencies = {
       'rafamadriz/friendly-snippets',
-      "mikavilpas/blink-ripgrep.nvim",
-      "jcdickinson/codeium.nvim",
-      "fang2hou/blink-copilot"
+      'mikavilpas/blink-ripgrep.nvim',
+      'milanglacier/minuet-ai.nvim',
     },
 
     -- use a release tag to download pre-built binaries
@@ -66,12 +60,12 @@ return {
           'snippet_forward',
           'fallback'
         },
-        -- ["<C-l>"] = {
-        --   function()
-        --     -- invoke manually, requires blink >v0.8.0
-        --     require("blink-cmp").show({ providers = { "ripgrep" } })
-        --   end,
-        -- },
+        -- C-g to trigger GPT completion from minuet
+        ['<C-g>'] = {
+          function(cmp)
+            return require('minuet').make_blink_map()(cmp)
+          end,
+        },
       },
 
       appearance = {
@@ -102,15 +96,15 @@ return {
       -- Default list of enabled providers defined so that you can extend it
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
-        default = {
-          -- 'codeium',
-          -- 'copilot',
-          'lsp',
-          'path',
-          'snippets',
-          'buffer'
-        },
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'minuet' },
         providers = {
+          minuet = {
+            name = 'minuet',
+            module = 'minuet.blink',
+            async = true,
+            timeout_ms = 5000,
+            score_offset = 50,
+          },
           -- 👇🏻👇🏻 add the ripgrep provider config below
           ripgrep = {
             module = "blink-ripgrep",
@@ -201,31 +195,6 @@ return {
               return items
             end,
           },
-          -- create provider
-          -- codeium = {
-          --   name = 'codeium', -- IMPORTANT: use the same name as you would for nvim-cmp
-          --   module = 'blink.compat.source',
-          --
-          --   -- all blink.cmp source config options work as normal:
-          --   score_offset = -3,
-          --
-          --   -- this table is passed directly to the proxied completion source
-          --   -- as the `option` field in nvim-cmp's source config
-          --   --
-          --   -- this is NOT the same as the opts in a plugin's lazy.nvim spec
-          --   opts = {
-          --     -- this is an option from cmp-digraphs
-          --     -- cache_digraphs_on_start = true,
-          --   },
-          -- },
-          -- copilot = {
-          --   name = 'copilot',
-          --   module = "blink-copilot",
-          --   opts = {
-          --     max_completions = 3,
-          --     max_attempts = 4,
-          --   }
-          -- },
         },
       },
       snippets = { preset = 'luasnip' },

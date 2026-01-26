@@ -1,38 +1,39 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
     dependencies = {
-      "JoosepAlviste/nvim-ts-context-commentstring",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      "windwp/nvim-ts-autotag"
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
+      'windwp/nvim-ts-autotag',
     },
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    opts = {
-      ensure_installed = {
-        "lua", "python", "rust", "typescript", "tsx", "vimdoc",
-        "html", "css", "nix", "markdown", "bash",
-      },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
-      },
-      indent = { enable = true, disable = { 'ruby' } },
-      context_commentstring = { enable = true, enable_autocmd = false },
-      autotag = { enable = true },
-    },
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    config = function()
+      -- New nvim-treesitter API (0.11+) - requires tree-sitter CLI
+      local ts = require('nvim-treesitter')
+      ts.setup({
+        install_dir = vim.fn.stdpath('data') .. '/site',
+        ensure_installed = {
+          'lua', 'python', 'rust', 'typescript', 'tsx', 'vimdoc',
+          'html', 'css', 'nix', 'markdown', 'bash', 'json', 'yaml',
+        },
+        auto_install = true,
+      })
+
+      -- Configure ts-context-commentstring
+      require('ts_context_commentstring').setup({
+        enable_autocmd = false,
+      })
+
+      -- Configure autotag
+      require('nvim-ts-autotag').setup({
+        opts = {
+          enable_close = true,
+          enable_rename = true,
+          enable_close_on_slash = false,
+        },
+      })
+    end,
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
