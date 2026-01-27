@@ -87,7 +87,7 @@ do
         fileencoding = "utf-8",
         foldcolumn = "0",
         foldenable = true,
-        foldexpr = "nvim_treesitter#foldexpr()",
+        foldexpr = "v:lua.vim.treesitter.foldexpr()",
         foldlevel = 99,
         foldlevelstart = 99,
         foldmethod = "expr",
@@ -216,3 +216,30 @@ kind_icons = {
     Operator = "",
     TypeParameter = "",
 }
+
+-- Configure diagnostic display
+vim.diagnostic.config({
+    severity_sort = true,
+    virtual_text = {
+        spacing = 4,
+        prefix = "●",
+        -- Only show warnings and errors in virtual text to reduce noise
+        severity = { min = vim.diagnostic.severity.WARN },
+    },
+    float = {
+        border = "rounded",
+        source = true,
+        header = "",
+        prefix = "",
+    },
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
+            [vim.diagnostic.severity.HINT] = " ",
+        },
+    },
+    underline = true,
+    update_in_insert = false,
+})
