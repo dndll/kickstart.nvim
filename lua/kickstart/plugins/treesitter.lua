@@ -20,6 +20,23 @@ return {
         auto_install = true,
       })
 
+      -- Create user commands for convenience
+      vim.api.nvim_create_user_command('TsInstall', function(opts)
+        ts.install(opts.fargs)
+      end, { nargs = '+', desc = 'Install treesitter parsers' })
+
+      vim.api.nvim_create_user_command('TsUpdate', function(opts)
+        if #opts.fargs > 0 then
+          ts.update(opts.fargs)
+        else
+          ts.update()
+        end
+      end, { nargs = '*', desc = 'Update treesitter parsers' })
+
+      vim.api.nvim_create_user_command('TsUninstall', function(opts)
+        ts.uninstall(opts.fargs)
+      end, { nargs = '+', desc = 'Uninstall treesitter parsers' })
+
       -- Configure ts-context-commentstring
       require('ts_context_commentstring').setup({
         enable_autocmd = false,
