@@ -16,8 +16,16 @@ return {
         ensure_installed = {
           'lua', 'python', 'rust', 'typescript', 'tsx', 'vimdoc',
           'html', 'css', 'nix', 'markdown', 'bash', 'json', 'yaml',
+          'toml', 'zig',
         },
         auto_install = true,
+      })
+
+      -- Enable treesitter highlighting for all buffers with a parser
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
       })
 
       -- Create user commands for convenience

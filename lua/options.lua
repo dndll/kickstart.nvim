@@ -125,7 +125,7 @@ do
         splitright = true,
         swapfile = false,
         tabstop = 2,
-        -- termguicolors = true,
+        termguicolors = true,
         timeoutlen = 150,
         undofile = true,
         updatetime = 50,

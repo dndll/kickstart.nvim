@@ -199,15 +199,14 @@ return {
                     },
                 },
                 solidity_ls_nomicfoundation = {
-                    -- cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
-                    -- filetypes = { 'solidity' },
-                    -- root_dir = require('lspconfig.util').find_git_ancestor,
-                    -- single_file_support = true,
+                    mason = false,
                 }
             }
             require("mason").setup()
 
-            local ensure = vim.tbl_keys(servers)
+            local ensure = vim.tbl_filter(function(name)
+                return servers[name].mason ~= false
+            end, vim.tbl_keys(servers))
 
             require("mason-lspconfig").setup {
                 ensure_installed = ensure,
@@ -221,6 +220,7 @@ return {
             -- Use Neovim 0.11+ native vim.lsp.config API
             local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
             for name, cfg in pairs(servers) do
+                cfg.mason = nil
                 cfg.capabilities = vim.tbl_deep_extend("force", blink_capabilities, cfg.capabilities or {})
                 vim.lsp.config(name, cfg)
             end
